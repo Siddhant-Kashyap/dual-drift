@@ -22,9 +22,18 @@ export class Environment {
 
     const buildingGeom = new THREE.BoxGeometry(1, 1, 1);
     const buildingMat = new THREE.MeshStandardMaterial({
-      color: 0x222222,
+      color: 0x2b313d,
       roughness: 1,
       metalness: 0,
+    });
+
+    const windowGeom = new THREE.PlaneGeometry(0.22, 0.50);
+    const windowMat = new THREE.MeshStandardMaterial({
+      color: 0x0b0f14,
+      roughness: 0.6,
+      metalness: 0,
+      emissive: 0xffd28a,
+      emissiveIntensity: 0.35,
     });
 
     const trunkGeom = new THREE.CylinderGeometry(0.15, 0.2, 1.2, 8);
@@ -46,6 +55,28 @@ export class Environment {
         const d = 1 + rng() * 2.5;
         mesh.scale.set(w, h, d);
         mesh.position.set(x, h / 2, -rng() * this.chunkLength);
+
+        // Add a few emissive window quads on the face toward the road.
+        const faceX = side === 1 ? -0.5 : 0.5;
+        const facePush = side === 1 ? -0.012 : 0.012;
+        const windowRotY = side === 1 ? -Math.PI / 2 : Math.PI / 2;
+
+        const rows = Math.max(3, Math.min(10, Math.round(h / 1.4)));
+        const cols = Math.max(2, Math.min(4, Math.round(d / 1.1)));
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (rng() < 0.35) continue; // some windows dark
+            const win = new THREE.Mesh(windowGeom, windowMat);
+            win.rotation.y = windowRotY;
+
+            // Local unit-cube coords; parent scaling turns this into world size.
+            const y = -0.45 + ((r + 1) / (rows + 1)) * 0.9;
+            const z = -0.42 + ((c + 1) / (cols + 1)) * 0.84;
+            win.position.set(faceX + facePush, y, z);
+            mesh.add(win);
+          }
+        }
+
         chunk.add(mesh);
       }
 
@@ -76,8 +107,14 @@ export class Environment {
   update(speed: number) {
     for (const chunk of this.chunks) {
       chunk.position.z += speed;
-      if (chunk.position.z > this.chunkLength) {
-        chunk.position.z -= this.chunkLength * this.chunkCount;
+      // Recycle only once the chunk is well behind the camera,
+      // and move it far enough forward that it re-enters from deep in the fog.
+      const wrapBehindCameraZ = 60; // camera is around z=14, so this is safely behind
+      const recycleDistance =
+        this.chunkLength * this.chunkCount + this.chunkLength * 2;
+
+      if (chunk.position.z > wrapBehindCameraZ) {
+        chunk.position.z -= recycleDistance;
       }
     }
   }

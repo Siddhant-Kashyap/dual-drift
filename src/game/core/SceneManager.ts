@@ -5,16 +5,24 @@ export class SceneManager {
 
   constructor() {
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000000);
-    this.scene.fog = new THREE.Fog(0x000000, 20, 60);
+
+    // Daylight: sky background + light atmospheric haze.
+    const sky = new THREE.Color(0x96c9ff);
+    this.scene.background = sky;
+    this.scene.fog = new THREE.Fog(sky, 18, 85);
+
+    // Soft skylight fill + warm sunlight key.
+    const hemi = new THREE.HemisphereLight(0xcfe8ff, 0xb9d2b1, 0.9);
+    hemi.position.set(0, 50, 0);
+    this.scene.add(hemi);
 
     const ambient = new THREE.AmbientLight(0xffffff, 0.35);
     this.scene.add(ambient);
 
-    const dir = new THREE.DirectionalLight(0xffffff, 1.0);
-    dir.position.set(6, 10, 8);
-    dir.castShadow = false;
-    this.scene.add(dir);
+    const sun = new THREE.DirectionalLight(0xfff1d6, 1.35);
+    sun.position.set(12, 22, 10);
+    sun.castShadow = false;
+    this.scene.add(sun);
   }
 }
 
