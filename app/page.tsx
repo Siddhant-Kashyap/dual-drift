@@ -50,8 +50,12 @@ export default function Home() {
 
           <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
             Dual Drift is a browser-based 3D endless runner where you steer two
-            cars at once through four lanes of hazards. Collect blue orbs to
-            build your score and combo, dodge red obstacles or lose instantly.
+            cars at once through four lanes of hazards. It&apos;s a{" "}
+            <span className="font-semibold text-white">
+              relaxing but challenging racing game
+            </span>{" "}
+            — collect blue orbs to build your score and combo, dodge red
+            obstacles or lose instantly.
           </p>
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -122,8 +126,9 @@ export default function Home() {
               <li>• No menus or grind — jump in and chase a new high score.</li>
             </ul>
             <p className="mt-4 text-xs text-zinc-400">
-              Ideal search terms: 3D endless runner, browser racing game, dual
-              control game, keyboard racing game.
+              Good fit if you like 3D endless runners, browser racing games,
+              dual-control reflex games, and relaxing yet challenging high score
+              games.
             </p>
           </div>
         </section>

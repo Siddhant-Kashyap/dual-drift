@@ -133,6 +133,7 @@ export class Game {
     this.setState(GameState.PLAYING);
     this.inputSystem.setEnabled(true);
     this.spawnSystem.setEnabled(true);
+    this.trackEvent("game_start", { event_category: "engagement" });
     this.audio.playMusic();
     this.loop.start();
   }
@@ -146,6 +147,10 @@ export class Game {
     this.setState(GameState.GAME_OVER);
     this.inputSystem.setEnabled(false);
     this.spawnSystem.setEnabled(false);
+    this.trackEvent("game_over", {
+      event_category: "engagement",
+      value: this.score,
+    });
     this.audio.playDeath();
     this.audio.stopMusic();
     this.loop.stop();
@@ -214,6 +219,17 @@ export class Game {
   private setScore(next: number) {
     this.score = next;
     this.params.onScoreChange?.(next);
+  }
+
+  private trackEvent(
+    name: string,
+    params?: Record<string, string | number | boolean>,
+  ) {
+    if (typeof window === "undefined") return;
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void })
+      .gtag;
+    if (!gtag) return;
+    gtag("event", name, params ?? {});
   }
 }
 
