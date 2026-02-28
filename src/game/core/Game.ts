@@ -10,6 +10,7 @@ import { DifficultySystem } from "../systems/DifficultySystem";
 import { InputSystem } from "../systems/InputSystem";
 import { LaneSystem } from "../systems/LaneSystem";
 import { SpawnSystem } from "../systems/SpawnSystem";
+import { AudioManager } from "../audio/AudioManager";
 
 export enum GameState {
   MENU = "MENU",
@@ -44,6 +45,8 @@ export class Game {
   private readonly inputSystem: InputSystem;
   private readonly spawnSystem: SpawnSystem;
   private readonly collisionSystem: CollisionSystem;
+
+  private readonly audio = new AudioManager();
 
   private lastBlueHitAtMsLeft = -Infinity;
   private lastBlueHitAtMsRight = -Infinity;
@@ -100,6 +103,8 @@ export class Game {
         if (car.id === "left") this.lastBlueHitAtMsLeft = nowMs;
         else this.lastBlueHitAtMsRight = nowMs;
 
+        this.audio.playCollect();
+
         this.spawnSystem.recycleObstacle(obstacle);
       },
     });
@@ -128,6 +133,7 @@ export class Game {
     this.setState(GameState.PLAYING);
     this.inputSystem.setEnabled(true);
     this.spawnSystem.setEnabled(true);
+    this.audio.playMusic();
     this.loop.start();
   }
 
@@ -140,6 +146,8 @@ export class Game {
     this.setState(GameState.GAME_OVER);
     this.inputSystem.setEnabled(false);
     this.spawnSystem.setEnabled(false);
+    this.audio.playDeath();
+    this.audio.stopMusic();
     this.loop.stop();
   }
 
@@ -155,6 +163,7 @@ export class Game {
     this.loop.stop();
 
     this.inputSystem.detach();
+    this.audio.dispose();
 
     this.renderer.domElement.remove();
     this.renderer.dispose();
