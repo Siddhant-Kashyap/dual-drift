@@ -34,136 +34,97 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative mx-auto w-full max-w-6xl px-6 pb-16">
-        <section className="grid gap-10 pt-10 lg:grid-cols-2 lg:items-center lg:gap-12 lg:pt-16">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-zinc-300">
-              <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.6)]" />
-              Endless. Fast. Two cars at once.
-            </div>
-
-            <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">
-              Split your focus.
-              <br />
-              <span className="bg-linear-to-r from-cyan-300 via-sky-200 to-fuchsia-300 bg-clip-text text-transparent">
-                Chase the combo.
-              </span>
-            </h1>
-
-            <p className="mt-6 max-w-xl text-base leading-7 text-zinc-300 sm:text-lg">
-              Dual Drift is a 3D endless runner where you control two cars
-              simultaneously. Collect blue obstacles to score, avoid red
-              obstacles to survive.
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link
-                href="/game"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-sm font-semibold text-black hover:bg-zinc-200"
-              >
-                Start drifting
-              </Link>
-              <div className="flex items-center gap-2 text-sm text-zinc-300">
-                <span className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-                  Left: <span className="font-semibold text-white">A</span> /{" "}
-                  <span className="font-semibold text-white">D</span>
-                </span>
-                <span className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-                  Right: <span className="font-semibold text-white">J</span> /{" "}
-                  <span className="font-semibold text-white">L</span>
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 text-xs text-zinc-400">
-              Combo tip: if both cars hit blue within{" "}
-              <span className="font-semibold text-zinc-200">500ms</span>, score{" "}
-              <span className="font-semibold text-zinc-200">x2</span>.
-            </div>
+      <main className="relative mx-auto w-full max-w-5xl px-6 pb-16">
+        <section className="pt-10 lg:pt-16">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-zinc-300">
+            <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.6)]" />
+            Fast-paced 3D endless racing • Free browser game
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-6 -z-10 rounded-[32px] bg-linear-to-r from-cyan-500/10 via-sky-500/10 to-fuchsia-500/10 blur-2xl" />
-            <div className="rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-[0_0_60px_rgba(168,85,247,0.10)]">
-              <div className="flex items-center justify-between">
-                <div className="text-xs font-medium text-zinc-300">
-                  Gameplay preview
-                </div>
-                <div className="text-xs text-zinc-400">4 lanes • 2 cars</div>
-              </div>
-              <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-black">
-                <div className="relative aspect-16/10">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(34,211,238,0.18),transparent_55%),radial-gradient(circle_at_70%_40%,rgba(168,85,247,0.16),transparent_55%)]" />
-                  <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.55))]" />
+          <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+            A 3D dual-control racing game{" "}
+            <span className="bg-linear-to-r from-cyan-300 via-sky-200 to-fuchsia-300 bg-clip-text text-transparent">
+              that melts your focus.
+            </span>
+          </h1>
 
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="grid w-[82%] grid-cols-4 gap-3">
-                      {Array.from({ length: 4 }).map((_, i) => (
-                        <div
-                          // eslint-disable-next-line react/no-array-index-key
-                          key={i}
-                          className="h-40 rounded-2xl border border-white/10 bg-white/5"
-                        />
-                      ))}
-                    </div>
-                  </div>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
+            Dual Drift is a browser-based 3D endless runner where you steer two
+            cars at once through four lanes of hazards. Collect blue orbs to
+            build your score and combo, dodge red obstacles or lose instantly.
+          </p>
 
-                  <div className="absolute bottom-6 left-1/2 flex w-[82%] -translate-x-1/2 items-end justify-between">
-                    <div className="h-10 w-14 rounded-xl bg-white shadow-[0_0_30px_rgba(255,255,255,0.18)]" />
-                    <div className="h-10 w-14 rounded-xl bg-zinc-200 shadow-[0_0_30px_rgba(255,255,255,0.14)]" />
-                  </div>
-
-                  <div className="absolute top-6 left-1/2 flex w-[82%] -translate-x-1/2 items-center justify-between">
-                    <div className="h-9 w-9 rounded-xl bg-cyan-300 shadow-[0_0_40px_rgba(34,211,238,0.45)]" />
-                    <div className="h-9 w-9 rounded-xl bg-red-500 shadow-[0_0_40px_rgba(239,68,68,0.45)]" />
-                    <div className="h-9 w-9 rounded-xl bg-cyan-300 shadow-[0_0_40px_rgba(34,211,238,0.45)]" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-3 gap-3 text-xs">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-                  <div className="text-zinc-400">Blue</div>
-                  <div className="mt-1 font-semibold text-white">+10 score</div>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-                  <div className="text-zinc-400">Red</div>
-                  <div className="mt-1 font-semibold text-white">
-                    Instant death
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-                  <div className="text-zinc-400">Speed</div>
-                  <div className="mt-1 font-semibold text-white">
-                    Ramps over time
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              href="/game"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-sm font-semibold text-black hover:bg-zinc-200"
+            >
+              Play Dual Drift now
+            </Link>
+            <span className="text-sm text-zinc-300">
+              No download • Keyboard controls • Desktop browser
+            </span>
           </div>
         </section>
 
-        <section className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-            <div className="text-sm font-semibold">Dual-control mastery</div>
-            <div className="mt-2 text-sm leading-6 text-zinc-300">
-              Independent lane control for both cars. Winning is rhythm,
-              coordination, and keeping calm at higher speeds.
-            </div>
+        <section className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-300">
+              How to play
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-zinc-300">
+              Survive as long as you can while chasing high scores and combos.
+              The game gets faster and more crowded the longer you stay alive.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm leading-6 text-zinc-200">
+              <li>
+                <span className="font-semibold text-white">1.</span>{" "}
+                <span className="font-semibold text-white">Left car</span> uses{" "}
+                <span className="font-semibold text-cyan-300">A</span> and{" "}
+                <span className="font-semibold text-cyan-300">D</span> to move
+                between the two left lanes.
+              </li>
+              <li>
+                <span className="font-semibold text-white">2.</span>{" "}
+                <span className="font-semibold text-white">Right car</span>{" "}
+                uses <span className="font-semibold text-cyan-300">J</span> and{" "}
+                <span className="font-semibold text-cyan-300">L</span> to move
+                between the two right lanes.
+              </li>
+              <li>
+                <span className="font-semibold text-white">3.</span> Hit{" "}
+                <span className="font-semibold text-sky-300">blue obstacles</span>{" "}
+                to earn points and build your combo.
+              </li>
+              <li>
+                <span className="font-semibold text-white">4.</span> Avoid{" "}
+                <span className="font-semibold text-red-400">
+                  red obstacles
+                </span>{" "}
+                completely — one hit ends the run.
+              </li>
+              <li>
+                <span className="font-semibold text-white">5.</span> If both
+                cars collect blue within{" "}
+                <span className="font-semibold text-zinc-100">500ms</span>, your
+                points for that hit are doubled.
+              </li>
+            </ul>
           </div>
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-            <div className="text-sm font-semibold">Combo window</div>
-            <div className="mt-2 text-sm leading-6 text-zinc-300">
-              Chain blue hits with both cars within 500ms to trigger a x2
-              multiplier.
-            </div>
-          </div>
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-            <div className="text-sm font-semibold">Endless difficulty</div>
-            <div className="mt-2 text-sm leading-6 text-zinc-300">
-              Speed increases and spawn rate accelerates as you survive longer.
-              How far can you drift?
-            </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 text-sm text-zinc-200">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-300">
+              Why players like it
+            </h2>
+            <ul className="mt-4 space-y-2 leading-6">
+              <li>• Short, intense runs that reward fast reactions.</li>
+              <li>• Simple controls, high difficulty ceiling.</li>
+              <li>• No menus or grind — jump in and chase a new high score.</li>
+            </ul>
+            <p className="mt-4 text-xs text-zinc-400">
+              Ideal search terms: 3D endless runner, browser racing game, dual
+              control game, keyboard racing game.
+            </p>
           </div>
         </section>
 

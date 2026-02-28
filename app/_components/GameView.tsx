@@ -1,5 +1,6 @@
 "use client";
 
+import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Game, GameState } from "@/src/game/core/Game";
 
@@ -63,18 +64,31 @@ export default function GameView() {
     };
   }, []);
 
+  const handleLeftTap = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    gameRef.current?.toggleLeftCarLane();
+  };
+
+  const handleRightTap = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    gameRef.current?.toggleRightCarLane();
+  };
+
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
       <div ref={containerRef} className="absolute inset-0" />
 
-      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between p-6">
-        <div className="flex w-full max-w-5xl items-start justify-between gap-4">
+      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between p-4 sm:p-6">
+        <div className="flex w-full max-w-5xl items-start justify-between gap-3 sm:gap-4">
           <div>
             <div className="text-lg font-semibold tracking-tight text-white">
               Dual Drift
             </div>
-            <div className="mt-1 text-sm text-zinc-300">
-              Left car: A/D • Right car: J/L
+            <div className="mt-1 text-[11px] text-zinc-300 sm:text-sm">
+              Desktop: Left car A/D • Right car J/L
+            </div>
+            <div className="mt-1 text-[11px] text-zinc-400 sm:hidden">
+              Mobile: Tap left / right side of the screen.
             </div>
           </div>
 
@@ -120,6 +134,19 @@ export default function GameView() {
           )}
         </div>
       </div>
+
+      {gameState === GameState.PLAYING && (
+        <div className="pointer-events-auto absolute inset-0">
+          <div
+            className="absolute inset-y-0 left-0 w-1/2 touch-none"
+            onPointerDown={handleLeftTap}
+          />
+          <div
+            className="absolute inset-y-0 right-0 w-1/2 touch-none"
+            onPointerDown={handleRightTap}
+          />
+        </div>
+      )}
     </div>
   );
 }

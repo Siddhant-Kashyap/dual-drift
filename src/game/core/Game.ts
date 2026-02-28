@@ -169,6 +169,18 @@ export class Game {
     this.renderer.dispose();
   }
 
+  toggleLeftCarLane() {
+    if (this.state !== GameState.PLAYING) return;
+    const next = this.leftCar.laneIndex === 0 ? 1 : 0;
+    this.laneSystem.applyLane(this.leftCar, next);
+  }
+
+  toggleRightCarLane() {
+    if (this.state !== GameState.PLAYING) return;
+    const next = this.rightCar.laneIndex === 2 ? 3 : 2;
+    this.laneSystem.applyLane(this.rightCar, next);
+  }
+
   private update(deltaSeconds: number) {
     if (this.state !== GameState.PLAYING) return;
 
