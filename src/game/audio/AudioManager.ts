@@ -8,7 +8,7 @@ export class AudioManager {
 
     this.music = this.safeCreateAudio("/audio/background.mp3", true);
     if (this.music) {
-      this.music.volume = 0.5;
+      this.music.volume = 0.2;
     }
     this.collect = this.safeCreateAudio("/audio/collect-blue.mp3");
     this.death = this.safeCreateAudio("/audio/death.mp3");
