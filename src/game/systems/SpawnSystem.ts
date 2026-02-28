@@ -42,7 +42,7 @@ export class SpawnSystem {
     const spawnInterval = this.params.getSpawnIntervalSeconds();
     while (this.spawnTimerSeconds >= spawnInterval) {
       this.spawnTimerSeconds -= spawnInterval;
-      this.spawnOne();
+      this.spawnWave();
     }
   }
 
@@ -82,17 +82,54 @@ export class SpawnSystem {
     }
   }
 
-  private spawnOne() {
-    const laneIndex = (Math.random() * 4) | 0;
-    const type: ObstacleType = Math.random() < 0.3 ? "red" : "blue";
+  private spawnWave() {
+    // As time goes on, increase the chance of red obstacles and
+    // increase how often we spawn tight clusters in one wave.
+    const t = this.elapsedSeconds;
 
-    const obs = this.pool.pop() ?? new Obstacle();
-    if (!this.params.scene.children.includes(obs.mesh)) {
-      this.params.scene.add(obs.mesh);
+    const baseRedChance = 0.3;
+    const extraRed = Math.min(0.25, t * 0.004); // up to +25% red over time
+    const redChance = baseRedChance + extraRed;
+
+    const baseClusterChance = 0.25;
+    const extraCluster = Math.min(0.45, t * 0.004); // up to +45% cluster chance
+    const clusterChance = baseClusterChance + extraCluster;
+
+    // Start with tighter pairs, and occasionally grow to triples as time goes on.
+    const maxClusterSize = t < 15 ? 2 : 3;
+    const clusterSize =
+      Math.random() < clusterChance ? maxClusterSize : 2;
+    const usedLanes = new Set<number>();
+    const baseZ = -46;
+    const zSpacing = 1.0;
+
+    for (let i = 0; i < clusterSize; i++) {
+      // Choose a lane that is not already used in this wave.
+      let laneIndex = (Math.random() * 4) | 0;
+      let guard = 0;
+      while (usedLanes.has(laneIndex) && guard++ < 6) {
+        laneIndex = (Math.random() * 4) | 0;
+      }
+      usedLanes.add(laneIndex);
+
+      let type: ObstacleType = Math.random() < redChance ? "red" : "blue";
+
+      // Ensure at least one blue in the early game so players can score.
+      if (t < 10 && i === 0 && type === "red") {
+        type = "blue";
+      }
+
+      const obs = this.pool.pop() ?? new Obstacle();
+      if (!this.params.scene.children.includes(obs.mesh)) {
+        this.params.scene.add(obs.mesh);
+      }
+
+      // Very small z offset within the wave so obstacles are packed
+      // closely together and demand fast reactions.
+      const z = baseZ - i * zSpacing;
+      obs.spawn({ laneIndex, type, z });
+      this.active.push(obs);
     }
-
-    obs.spawn({ laneIndex, type, z: -60 });
-    this.active.push(obs);
   }
 }
 
