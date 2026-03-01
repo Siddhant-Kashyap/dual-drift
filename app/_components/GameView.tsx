@@ -4,6 +4,8 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Game, GameState } from "@/src/game/core/Game";
 
+const MIN_DESKTOP_WIDTH = 768; // Adjust this value as needed for your definition of "desktop"
+
 export default function GameView() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const gameRef = useRef<Game | null>(null);
@@ -11,9 +13,30 @@ export default function GameView() {
   const [gameState, setGameState] = useState<GameState>(GameState.MENU);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(true); // Default to true, will be updated in useEffect
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // Initial check for desktop size
+    setIsDesktop(window.innerWidth >= MIN_DESKTOP_WIDTH);
+
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= MIN_DESKTOP_WIDTH);
+      // Only resize the game if it's currently rendered (i.e., on desktop)
+      if (gameRef.current && window.innerWidth >= MIN_DESKTOP_WIDTH) {
+        gameRef.current.resize();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    if (!containerRef.current || !isDesktop) {
+      // If not desktop, or container not ready, don't initialize the game
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        gameRef.current?.dispose();
+        gameRef.current = null;
+      };
+    }
 
     // Load high score from localStorage if available.
     try {
@@ -54,15 +77,12 @@ export default function GameView() {
     game.resize();
     gameRef.current = game;
 
-    const onResize = () => game.resize();
-    window.addEventListener("resize", onResize);
-
     return () => {
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", handleResize);
       gameRef.current?.dispose();
       gameRef.current = null;
     };
-  }, []);
+  }, [isDesktop]); // Re-run effect if isDesktop changes
 
   const handleLeftTap = (event: React.PointerEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -73,6 +93,14 @@ export default function GameView() {
     event.preventDefault();
     gameRef.current?.toggleRightCarLane();
   };
+
+  if (!isDesktop) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-black text-white">
+        <p className="text-center text-lg">You need a desktop to play this game.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
@@ -150,4 +178,5 @@ export default function GameView() {
     </div>
   );
 }
+
 
